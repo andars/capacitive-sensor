@@ -1,12 +1,13 @@
-.PHONY: run graph
+.PHONY: run
 
 read: read.c
-    c99 -o $@ $<
+	c99 -o $@ $< -lwiringPi
 
 run: read
-    sudo ./read
+	sudo ./read
 
 graph: read
-    sudo ./read | sed -u '1,2d' > samples.data
-    ./plot.gp
-    
+	@echo "Collecting ${count} samples..."
+	sudo ./read | sed -u '1,2d' | awk -W interactive '1; NR > ${count}{exit}' > data.dat
+	./plot.gp
+	
