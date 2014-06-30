@@ -1,3 +1,8 @@
+/*
+    Method inspired by the arduino CapacitiveSense library as well as others
+    Initial code from http://www.raspberrypi.org/forums/viewtopic.php?t=42358
+*/
+
 #include <wiringPi.h>
 
 #include <stdio.h>
@@ -7,33 +12,42 @@
 #define MYPIN 0 
 #define NUMREADINGS 20
 
+void setup(void);
+int read(void);
+
 int main (void) {
-    int c,x,re[1000],med=0;
     printf ("Raspberry Pi wiringPi Capacitor reading \n") ;
-
-    int err = wiringPiSetup();
-    printf("successfully initialized wiringPi %d\n", err);
-    piHiPri(99);
-    for (;;) {
-        for (x=0;x<NUMREADINGS;x++) {
-            pinMode(MYPIN, OUTPUT);
-            digitalWrite (MYPIN, LOW);
-            c=0;
-            pinMode (MYPIN, INPUT);
-            while (digitalRead(MYPIN)==LOW) {
-                c++;
-            }
-            re[x]=c;
-        }
-        med=0;    
-        for (x=0;x<NUMREADINGS;x++) 
-            med+=re[x];
-        if (med/NUMREADINGS > 8000) {
-            printf("down:");
-
-        }
-        printf("%d\n",med/NUMREADINGS);
+    setup();
+    
+    while (1) {
+        printf("%d\n", read());
         fflush(stdout);
         delay(10);
     }                             
+}
+
+void setup(void) {
+    wiringPiSetup();
+    printf("successfully initialized wiringPi\n");
+    piHiPri(99); //Try to decrease nice value
+}
+
+int read(void) {
+    int i, count, sum=0;
+    for (i = 0; i < NUMREADINGS; i++) {
+        pinMode(MYPIN, OUTPUT);
+        digitalWrite(MYPIN, LOW);
+        
+        count = 0;
+        pinMode(MYPIN, INPUT);
+        while (digitalRead(MYPIN) == LOW) {
+            count++;
+            if (count > 100000) {
+                break; 
+            }
+        }
+        sum += count;
+    }
+
+    return sum/NUMREADINGS;
 }
