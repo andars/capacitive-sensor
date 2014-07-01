@@ -13,14 +13,14 @@
 #define NUMREADINGS 20
 
 void setup(void);
-int read(void);
+int read(int pin);
 
 int main (void) {
     printf ("Raspberry Pi wiringPi Capacitor reading \n") ;
     setup();
     
     while (1) {
-        printf("%d\n", read());
+        printf("%d\n", read(MYPIN));
         fflush(stdout);
         delay(10);
     }                             
@@ -32,15 +32,15 @@ void setup(void) {
     piHiPri(99); //Try to decrease nice value
 }
 
-int read(void) {
+int read(int pin) {
     int i, count, sum=0;
     for (i = 0; i < NUMREADINGS; i++) {
-        pinMode(MYPIN, OUTPUT);
-        digitalWrite(MYPIN, LOW);
+        pinMode(pin, OUTPUT);
+        digitalWrite(pin, LOW);
         
         count = 0;
-        pinMode(MYPIN, INPUT);
-        while (digitalRead(MYPIN) == LOW) {
+        pinMode(pin, INPUT);
+        while (digitalRead(pin) == LOW) {
             count++;
             if (count > 100000) {
                 break; 
