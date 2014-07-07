@@ -7,7 +7,6 @@ run: read
 	sudo ./read
 
 graph: read
-	@echo "Collecting ${count} samples..."
-	sudo ./read | sed -u '1,2d' | awk -W interactive '1; NR > ${count}{exit}' > data.dat
+	@echo "Collecting ${count} samples from pin ${pin}..."
+	sudo ./read ${count} ${pin} > data.dat
 	./plot.gp
-	

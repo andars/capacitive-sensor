@@ -9,18 +9,28 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define MYPIN 0 
+#define PIN_DEFAULT 0 
 #define NUMREADINGS 20
 
 void setup(void);
 int read(int pin);
 
-int main (void) {
-    printf ("Raspberry Pi wiringPi Capacitor reading \n") ;
+int main (int argc, char* argv[]) {
+    fprintf(stderr, "Raspberry Pi wiringPi Capacitor reading \n") ;
     setup();
+    int count = 500;
+    int pin = PIN_DEFAULT;
+    if (argc > 1) {
+        count = atoi(argv[1]);
+    }
     
-    while (1) {
-        printf("%d\n", read(MYPIN));
+    if (argc > 2) {
+        pin = atoi(argv[2]);
+        fprintf(stderr,"%d\n", pin);
+        
+    }
+    for (int i = 0; i < count; i++) {
+        printf("%d\n", read(pin));
         fflush(stdout);
         delay(10);
     }                             
@@ -28,7 +38,7 @@ int main (void) {
 
 void setup(void) {
     wiringPiSetup();
-    printf("successfully initialized wiringPi\n");
+    fprintf(stderr, "successfully initialized wiringPi\n");
     piHiPri(99); //Try to decrease nice value
 }
 
@@ -48,6 +58,5 @@ int read(int pin) {
         }
         sum += count;
     }
-
     return sum/NUMREADINGS;
 }
