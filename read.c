@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "read.h"
-#define NUMREADINGS 20
 
 void setup(void) {
     wiringPiSetup();
