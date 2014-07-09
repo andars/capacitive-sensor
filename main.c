@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <wiringPi.h>
 
 
@@ -19,8 +20,20 @@ int main (int argc, char* argv[]) {
         
     }
     fprintf(stderr, "Count: %d, pin: %d", count, pin);
+    bool handled = false;
+    int val;
     for (int i = 0; i < count; i++) {
-        printf("%d\n", read(pin));
+        val = read(pin);
+        if (val > 1200 && !handled) {
+            handled = true;
+            printf("        HIGH\n");
+        } else if (val < 1200) {
+            handled = false;
+            //printf("RESET\n");
+        } else {
+//            printf("        REPEAT\n");
+        }
+        //printf("%d\n", read(pin));
         fflush(stdout);
         delay(10);
     }                             
