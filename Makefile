@@ -11,17 +11,20 @@ SRCS = main.c \
 OBJDIR = build
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
-
-$(OBJDIR)/%.o : %.c
-	$(CC) -o $@ $< -c $(CFLAGS)
-
 read: $(OBJS)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+
+collect: collect.o read.o
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+
+$(OBJDIR)/%.o : %.c %.h
+	$(CC) -o $@ $< -c $(CFLAGS)
+
 
 run: read
 	sudo ./read
 
-graph: read
+graph: collect
 	@echo "Collecting ${count} samples from pin ${pin}..."
-	sudo ./read ${count} ${pin} > data.dat
+	sudo ./collect ${count} ${pin} > data.dat
 	./plot.gp
