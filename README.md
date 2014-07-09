@@ -4,11 +4,17 @@ Trying to get this to work. Graphs are helping a lot to show that something is a
 
 Color Graph: 
 This shows two sensors being used simultaneously
-![Color Graph][graph-color]
+![Color Graph][graph_color]
+
+##Concept
+![Animation][sensor_animation]
 
 ###Schematic
 ![Schematic][schematic]
 
+
+
 [graph]: graph.png
-[graph-color]: graph_color.png
+[graph_color]: graph_color.png
 [schematic]: schematic.png
+[sensor_animation]: sensor_animation.gif
