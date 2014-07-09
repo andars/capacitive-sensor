@@ -1,7 +1,15 @@
 .PHONY: run
 
-read: read.c
-	c99 -o $@ $< -lwiringPi
+LIBS = -lwiringPi
+CFLAGS = -Wall
+CC = c99
+OBJS = main.o \
+       read.o
+
+%.o : %.c
+	$(CC) -o $@ $< -c $(CFLAGS)
+read: $(OBJS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 run: read
 	sudo ./read
