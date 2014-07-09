@@ -4,7 +4,7 @@ Trying to get this to work. Graphs are helping a lot to show that something is a
 
 Color Graph: 
 This shows two sensors being used simultaneously
-![Color Graph][graph_color]
+![Color Graph][graph-color]
 
 ###Schematic
 ![Schematic][schematic]
