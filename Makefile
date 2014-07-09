@@ -3,11 +3,18 @@
 LIBS = -lwiringPi
 CFLAGS = -Wall
 CC = c99
-OBJS = main.o \
-       read.o
 
-%.o : %.c
+SRCS = main.c \
+       read.c
+
+
+OBJDIR = build
+OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
+
+
+$(OBJDIR)/%.o : %.c
 	$(CC) -o $@ $< -c $(CFLAGS)
+
 read: $(OBJS)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
